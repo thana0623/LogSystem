@@ -55,14 +55,15 @@ def add_log(file_path: Path, title: str, content: str, tags: str | None) -> None
 def show_logs(file_path: Path, keyword: str | None, tag: str | None) -> None:
     logs = load_logs(file_path)
     filtered = []
+    keyword_lower = keyword.lower() if keyword else None
     for log in logs:
         title = str(log.get("title", ""))
         content = str(log.get("content", ""))
         matches_keyword = True
         matches_tag = True
-        if keyword:
+        if keyword_lower:
             combined = f"{title} {content}".lower()
-            matches_keyword = keyword.lower() in combined
+            matches_keyword = keyword_lower in combined
         if tag:
             matches_tag = tag in log.get("tags", [])
         if matches_keyword and matches_tag:
