@@ -24,7 +24,11 @@ def save_logs(file_path: Path, logs: list[dict]) -> None:
 
 
 def next_id(logs: list[dict]) -> int:
-    valid_ids = [log.get("id") for log in logs if isinstance(log.get("id"), int)]
+    valid_ids = []
+    for log in logs:
+        current_id = log.get("id")
+        if isinstance(current_id, int):
+            valid_ids.append(current_id)
     return max(valid_ids, default=0) + 1
 
 
@@ -48,7 +52,7 @@ def add_log(file_path: Path, title: str, content: str, tags: str | None) -> None
     print(f"已新增日志 #{log['id']}")
 
 
-def list_logs(file_path: Path, keyword: str | None, tag: str | None) -> None:
+def show_logs(file_path: Path, keyword: str | None, tag: str | None) -> None:
     logs = load_logs(file_path)
     filtered = []
     for log in logs:
@@ -103,7 +107,7 @@ def parse_args() -> argparse.Namespace:
     list_parser.add_argument("--tag", help="按标签过滤")
 
     delete_parser = subparsers.add_parser("delete", help="删除日志")
-    delete_parser.add_argument("--log-id", "--id", dest="log_id", required=True, type=int, help="日志 ID")
+    delete_parser.add_argument("--log-id", "-i", dest="log_id", required=True, type=int, help="日志 ID")
     return parser.parse_args()
 
 
@@ -114,7 +118,7 @@ def main() -> None:
     if args.command == "add":
         add_log(file_path, args.title, args.content, args.tags)
     elif args.command == "list":
-        list_logs(file_path, args.keyword, args.tag)
+        show_logs(file_path, args.keyword, args.tag)
     elif args.command == "delete":
         delete_log(file_path, args.log_id)
 
