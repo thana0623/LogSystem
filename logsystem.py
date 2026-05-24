@@ -8,7 +8,10 @@ def load_logs(file_path: Path) -> list[dict]:
     if not file_path.exists():
         return []
     with file_path.open("r", encoding="utf-8") as file:
-        data = json.load(file)
+        try:
+            data = json.load(file)
+        except json.JSONDecodeError:
+            return []
         if isinstance(data, list):
             return data
     return []
@@ -24,13 +27,19 @@ def next_id(logs: list[dict]) -> int:
     return max((log["id"] for log in logs), default=0) + 1
 
 
+def parse_tags(tags: str | None) -> list[str]:
+    if not tags:
+        return []
+    return [tag.strip() for tag in tags.split(",") if tag.strip()]
+
+
 def add_log(file_path: Path, title: str, content: str, tags: str | None) -> None:
     logs = load_logs(file_path)
     log = {
         "id": next_id(logs),
         "title": title,
         "content": content,
-        "tags": [tag.strip() for tag in tags.split(",") if tag.strip()] if tags else [],
+        "tags": parse_tags(tags),
         "created_at": datetime.now(timezone.utc).isoformat(),
     }
     logs.append(log)
@@ -87,7 +96,7 @@ def parse_args() -> argparse.Namespace:
     list_parser.add_argument("--tag", help="按标签过滤")
 
     delete_parser = subparsers.add_parser("delete", help="删除日志")
-    delete_parser.add_argument("--id", required=True, type=int, help="日志 ID")
+    delete_parser.add_argument("--log-id", "--id", dest="log_id", required=True, type=int, help="日志 ID")
     return parser.parse_args()
 
 
@@ -100,7 +109,7 @@ def main() -> None:
     elif args.command == "list":
         list_logs(file_path, args.keyword, args.tag)
     elif args.command == "delete":
-        delete_log(file_path, args.id)
+        delete_log(file_path, args.log_id)
 
 
 if __name__ == "__main__":
