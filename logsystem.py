@@ -24,7 +24,8 @@ def save_logs(file_path: Path, logs: list[dict]) -> None:
 
 
 def next_id(logs: list[dict]) -> int:
-    return max((log["id"] for log in logs), default=0) + 1
+    valid_ids = [log.get("id") for log in logs if isinstance(log.get("id"), int)]
+    return max(valid_ids, default=0) + 1
 
 
 def parse_tags(tags: str | None) -> list[str]:
@@ -51,10 +52,12 @@ def list_logs(file_path: Path, keyword: str | None, tag: str | None) -> None:
     logs = load_logs(file_path)
     filtered = []
     for log in logs:
+        title = str(log.get("title", ""))
+        content = str(log.get("content", ""))
         matches_keyword = True
         matches_tag = True
         if keyword:
-            combined = f"{log['title']} {log['content']}".lower()
+            combined = f"{title} {content}".lower()
             matches_keyword = keyword.lower() in combined
         if tag:
             matches_tag = tag in log.get("tags", [])
@@ -66,14 +69,18 @@ def list_logs(file_path: Path, keyword: str | None, tag: str | None) -> None:
         return
 
     for log in filtered:
+        log_id = log.get("id", "-")
+        title = str(log.get("title", ""))
+        content = str(log.get("content", ""))
+        created_at = str(log.get("created_at", "-"))
         tags_text = ",".join(log.get("tags", [])) or "-"
-        print(f"[{log['id']}] {log['title']} | 标签: {tags_text} | 时间: {log['created_at']}")
-        print(f"    {log['content']}")
+        print(f"[{log_id}] {title} | 标签: {tags_text} | 时间: {created_at}")
+        print(f"    {content}")
 
 
 def delete_log(file_path: Path, log_id: int) -> None:
     logs = load_logs(file_path)
-    remaining = [log for log in logs if log["id"] != log_id]
+    remaining = [log for log in logs if log.get("id") != log_id]
     if len(remaining) == len(logs):
         print(f"未找到日志 #{log_id}")
         return
