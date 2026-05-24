@@ -109,7 +109,7 @@ def parse_args() -> argparse.Namespace:
     list_parser.add_argument("--tag", help="按标签过滤")
 
     delete_parser = subparsers.add_parser("delete", help="删除日志")
-    delete_parser.add_argument("--log-id", "-i", dest="log_id", required=True, type=int, help="日志 ID")
+    delete_parser.add_argument("--log_id", "-i", dest="log_id", required=True, type=int, help="日志 ID")
     return parser.parse_args()
 
 
