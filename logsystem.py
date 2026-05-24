@@ -79,7 +79,7 @@ def show_logs(file_path: Path, keyword: str | None, tag: str | None) -> None:
         title = str(log.get("title", ""))
         content = str(log.get("content", ""))
         created_at = str(log.get("created_at", "-"))
-        tags_text = ",".join(log.get("tags", [])) or "-"
+        tags_text = ",".join(str(tag_item) for tag_item in log.get("tags", [])) or "-"
         print(f"[{log_id}] {title} | 标签: {tags_text} | 时间: {created_at}")
         print(f"    {content}")
 
