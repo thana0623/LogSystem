@@ -23,3 +23,4 @@ python logsystem.py delete --log_id 1
 
 默认数据文件：`logs.json`（位于当前目录，可通过 `--file` 指定其他路径）。
 时间使用 UTC ISO 8601 格式保存。
+标签以英文逗号分隔，不支持在单个标签内包含逗号。

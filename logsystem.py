@@ -66,7 +66,7 @@ def show_logs(file_path: Path, keyword: str | None, tag: str | None) -> None:
             combined = f"{title} {content}".lower()
             matches_keyword = keyword_lower in combined
         if tag_lower:
-            matches_tag = tag_lower in [str(item).lower() for item in log.get("tags", [])]
+            matches_tag = any(tag_lower == str(item).lower() for item in log.get("tags", []))
         if matches_keyword and matches_tag:
             filtered.append(log)
 
@@ -109,7 +109,7 @@ def parse_args() -> argparse.Namespace:
     list_parser.add_argument("--tag", help="按标签过滤")
 
     delete_parser = subparsers.add_parser("delete", help="删除日志")
-    delete_parser.add_argument("--log_id", "-i", dest="log_id", required=True, type=int, help="日志 ID")
+    delete_parser.add_argument("--log_id", "-i", required=True, type=int, help="日志 ID")
     return parser.parse_args()
 
 
