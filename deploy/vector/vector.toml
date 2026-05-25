@@ -1,0 +1,46 @@
+# ============================================================
+# Vector configuration — LogSystem log collection & ETL
+# ============================================================
+
+# ── Sources ──
+
+[sources.docker_stdout]
+  type = "docker_logs"
+  # Vector auto-discovers all Docker containers
+
+[sources.file_logs]
+  type = "file"
+  include = ["/logs/**/*.log"]
+  # Mount host log directories to /logs/ in Vector container
+
+# ── Transforms ──
+
+[transforms.structured]
+  # JSON logs from Docker stdout → parse and pass through
+  type = "remap"
+  inputs = ["docker_stdout"]
+  source = '''
+    . = parse_json!(.message) ?? .
+    .service_name = .service_name ?? "unknown"
+    .source_type = "stdout"
+  '''
+
+[transforms.unstructured]
+  # Non-JSON file logs → regex parse
+  type = "remap"
+  inputs = ["file_logs"]
+  source = '''
+    parsed = parse_regex!(.message, r'(?P<timestamp>\S+)\s+(?P<level>\S+)\s+(?P<logger>\S+)\s+-\s+(?P<message>.*)')
+    . = merge(., parsed ?? {})
+    .source_type = "file"
+  '''
+
+# ── Sinks ──
+
+[sinks.clickhouse]
+  type = "clickhouse"
+  inputs = ["structured", "unstructured"]
+  endpoint = "http://clickhouse:8123"
+  database = "logsys"
+  table = "logs"
+  skip_unknown_fields = true

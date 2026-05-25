@@ -34,3 +34,9 @@ Thumbs.db
 # Temp
 *.log
 *.tmp
+
+# Logs directory (runtime)
+logs/
+
+# Docker
+docker-compose.override.yml
