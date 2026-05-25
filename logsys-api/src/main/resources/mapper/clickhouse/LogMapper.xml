@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.logsys.dao.clickhouse.LogMapper">
+
+    <!-- Base column set for log queries -->
+    <sql id="logColumns">
+        timestamp,
+        service_name,
+        service_instance,
+        source_host,
+        source_type,
+        level,
+        logger,
+        message,
+        trace_id,
+        span_id,
+        exception_type,
+        exception_message,
+        exception_stacktrace,
+        tags,
+        fields
+    </sql>
+
+    <!-- Dynamic WHERE clause for log queries -->
+    <sql id="logConditions">
+        <where>
+            timestamp &gt;= toDateTime64(#{params.startTime}, 3)
+            AND timestamp &lt;= toDateTime64(#{params.endTime}, 3)
+            <if test="params.serviceName != null and params.serviceName != ''">
+                AND service_name = #{params.serviceName}
+            </if>
+            <if test="params.level != null and params.level != ''">
+                AND level = #{params.level}
+            </if>
+            <if test="params.keyword != null and params.keyword != ''">
+                AND hasToken(message, #{params.keyword})
+            </if>
+            <if test="params.traceId != null and params.traceId != ''">
+                AND trace_id = #{params.traceId}
+            </if>
+        </where>
+    </sql>
+
+    <select id="queryLogs" resultType="com.logsys.model.vo.LogEntryVO">
+        SELECT
+            <include refid="logColumns"/>
+        FROM logs
+        <include refid="logConditions"/>
+        ORDER BY timestamp ${params.sort}
+        LIMIT #{params.limit} OFFSET #{params.offset}
+    </select>
+
+    <select id="countLogs" resultType="long">
+        SELECT count()
+        FROM logs
+        <include refid="logConditions"/>
+    </select>
+
+</mapper>

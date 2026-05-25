@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    postgres:
+      url: jdbc:postgresql://localhost:5432/logsys_meta
+      username: logsys
+      password: changeme
+
+logging:
+  level:
+    com.logsys: DEBUG
