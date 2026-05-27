@@ -14,7 +14,7 @@ LogSystem is a lightweight, single-machine log collection and analysis platform 
 | API | Spring Boot 3.x | REST API, query routing |
 | Analysis | Python 3.12 | Error clustering, statistics (Phase 2) |
 | Visualization | Grafana OSS | Pre-built dashboards |
-| Frontend | React 18 + TypeScript (Phase 2) | Enterprise-grade UI |
+| Frontend | Next.js 14 + TypeScript (Phase 2) | Enterprise-grade UI |
 
 ## Data Flow
 

@@ -100,20 +100,20 @@ PR 提交
 
 ---
 
-### 3.2 前端 React（Phase 2）
+### 3.2 前端 Next.js（Phase 2）
 
 #### 结构检查
 
 - [ ] API 调用统一走 `src/shared/lib/api-client.ts`，无裸 `fetch` / `axios`
 - [ ] 组件不包含 API 调用逻辑（调 hooks，不直接调 client）
 - [ ] 组件不包含业务逻辑（业务在 `features/`）
-- [ ] 页面在 `pages/`，组合块在 `widgets/`，通用组件在 `shared/ui/`
+- [ ] 页面在 `src/app/`（App Router 文件系统路由），通用组件在 `components/`
 
 #### Mock 检查
 
 - [ ] MSW handlers 返回的数据结构与 api-spec.md 一致
 - [ ] Mock 覆盖：正常数据（≥20 条）、空列表、单条数据、超长文本（500+ 字符）、特殊字符
-- [ ] `VITE_ENABLE_MOCK=true` 时页面可完整交互，无需后端
+- [ ] `NEXT_PUBLIC_ENABLE_MOCK=true` 时页面可完整交互，无需后端
 
 #### 状态覆盖（每一处数据请求）
 

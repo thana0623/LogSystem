@@ -2,7 +2,11 @@ import type { Config } from "tailwindcss";
 
 const config: Config = {
   darkMode: "class",
-  content: ["./index.html", "./src/**/*.{ts,tsx}"],
+  content: [
+    "./src/app/**/*.{ts,tsx}",
+    "./src/components/**/*.{ts,tsx}",
+    "./src/features/**/*.{ts,tsx}",
+  ],
   theme: {
     extend: {
       colors: {
@@ -39,7 +43,6 @@ const config: Config = {
           DEFAULT: "hsl(var(--popover))",
           foreground: "hsl(var(--popover-foreground))",
         },
-        // LogSystem status colors
         error: {
           DEFAULT: "hsl(var(--error))",
           soft: "hsl(var(--error-soft))",

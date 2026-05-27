@@ -11,7 +11,7 @@
 | 架构师 | 你 | 架构设计、API 契约、DDL 审核、前后端联调、代码审核、PR 合并 |
 | 后端（Java） | 你 + 待定 | Spring Boot API、ClickHouse 查询、Vector 配置 |
 | 后端（Python） | 待定（外援） | 错误聚类脚本、统计分析、AI 扩展 |
-| 前端（React） | 待定（专业前端） | React 页面、图表、UI 组件 |
+| 前端（Next.js） | 待定（专业前端） | Next.js 页面、图表、UI 组件 |
 
 ## 2. 分支策略
 
@@ -52,7 +52,7 @@ main          ← 永远可部署，只接受 PR 合并
   产出：前端可以调 API 拿到真实数据格式
 
 第 3 步：前端启动（与第 2 步并行准备工作）
-  ├── React 项目骨架 + 路由 + 布局
+  ├── Next.js 项目骨架 + App Router + 布局
   ├── Mock Server 搭建（MSW）
   ├── 全局样式 + 设计 Token
   └── 共享组件库（Button/Input/Select/Table/Card/Badge/Toast）
@@ -133,10 +133,10 @@ logsys-ui/src/
 // src/shared/lib/api-client.ts
 // 环境变量控制，构建时决定，禁止运行时判断
 
-const API_BASE = import.meta.env.VITE_API_BASE ?? '';
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? '';
 
-// 开发模式：VITE_ENABLE_MOCK=true → MSW 拦截
-// 联调模式：VITE_ENABLE_MOCK=false → 直连后端
+// 开发模式：NEXT_PUBLIC_ENABLE_MOCK=true → MSW 拦截
+// 联调模式：NEXT_PUBLIC_ENABLE_MOCK=false → 直连后端
 // 所有 API 调用统一走这个 client，不得绕过
 ```
 
@@ -282,8 +282,8 @@ SERVER_PORT=8080
 GF_SECURITY_ADMIN_PASSWORD=<生成随机密码>
 
 # 前端
-VITE_API_BASE=http://localhost:8080
-VITE_ENABLE_MOCK=true    # 开发=true, 联调=false, 生产=不存在此变量
+NEXT_PUBLIC_API_BASE=http://localhost:8080
+NEXT_PUBLIC_ENABLE_MOCK=true    # 开发=true, 联调=false, 生产=不存在此变量
 ```
 
 `.env` 不入 git（已在 `.gitignore`），提供 `.env.example` 作为模板，值全部为 `changeme`。

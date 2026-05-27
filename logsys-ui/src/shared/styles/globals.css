@@ -14,7 +14,6 @@
     font-feature-settings: "rlig" 1, "calt" 1;
   }
 
-  /* Scrollbar styling */
   ::-webkit-scrollbar {
     width: 6px;
     height: 6px;
@@ -34,7 +33,6 @@
 }
 
 @layer utilities {
-  /* Log-specific utilities */
   .font-log {
     font-family: "JetBrains Mono", "IBM Plex Mono", monospace;
     font-size: 13px;

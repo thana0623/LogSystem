@@ -48,9 +48,8 @@
 
 | 组件 | 版本 | 说明 |
 |------|------|------|
-| React | 18.3 | UI 框架 |
+| Next.js | 14.x | React 全栈框架（内置 React 18 + App Router） |
 | TypeScript | 5.5+ | 类型系统，strict 模式 |
-| Vite | 5.4 | 构建工具 |
 | TailwindCSS | 3.4 | 原子化样式 |
 | shadcn/ui | latest | 组件基座（仅结构） |
 | Zustand | 4.5 | 客户端状态 |
@@ -167,30 +166,34 @@ logsys/                              # Monorepo 根
 │
 ├── logsys-ui/                       # 前端（Phase 2 — 专业前端负责）
 │   ├── package.json
-│   ├── vite.config.ts
+│   ├── next.config.js
 │   ├── tailwind.config.ts
 │   ├── tsconfig.json
-│   ├── index.html
 │   ├── public/
 │   └── src/
-│       ├── app/
-│       ├── pages/
-│       ├── widgets/
+│       ├── app/                      # Next.js App Router（文件系统路由）
+│       │   ├── layout.tsx
+│       │   ├── providers.tsx
+│       │   ├── dashboard/page.tsx
+│       │   ├── logs/page.tsx
+│       │   ├── errors/page.tsx
+│       │   └── services/[name]/page.tsx
+│       ├── components/
+│       │   ├── ui/
+│       │   └── layout/
 │       ├── features/
 │       ├── entities/
 │       ├── shared/
-│       │   ├── ui/
 │       │   ├── lib/
 │       │   │   ├── api-client.ts       ← 唯一 API 调用入口
 │       │   │   └── formatters.ts
 │       │   └── styles/
 │       │       ├── globals.css
 │       │       └── tokens.css
-│       ├── mocks/
-│       │   ├── server.ts
-│       │   ├── handlers/
-│       │   └── fixtures/
-│       └── styles/
+│       └── mocks/
+│           ├── server.ts
+│           ├── handlers/
+│           └── fixtures/
 │
 └── test/                             # 集成测试
     ├── docker-compose.test.yml
@@ -280,7 +283,7 @@ chore/{描述}                ← 构建/CI/杂务
 | ClickHouse Native | **9000** | TCP | 原生协议（Python 驱动用） |
 | PostgreSQL | **5432** | TCP | — |
 | Grafana | **3000** | HTTP | 仪表盘 |
-| 前端 Dev Server | **5173** | HTTP | Vite 默认 |
+| 前端 Dev Server | **3000** | HTTP | Next.js 默认 |
 | Vector | — | — | 不暴露端口，仅出站 |
 
 **规则**：
@@ -313,8 +316,8 @@ GF_SECURITY_ADMIN_PASSWORD=changeme     # 部署时修改
 GF_INSTALL_PLUGINS=""                   # 不装插件，保持轻量
 
 # ── 前端（Phase 2） ──
-VITE_API_BASE=http://localhost:8080
-VITE_ENABLE_MOCK=true                   # 开发模式=true, 联调=false
+NEXT_PUBLIC_API_BASE=http://localhost:8080
+NEXT_PUBLIC_ENABLE_MOCK=true            # 开发模式=true, 联调=false
 ```
 
 ---
@@ -397,6 +400,6 @@ VITE_ENABLE_MOCK=true                   # 开发模式=true, 联调=false
 | Java 17 而非 21 | LTS 覆盖广，实验室环境更常见 |
 | Flyway 而非 Liquibase | Flyway 更轻量，SQL 直写，学习成本低 |
 | DTO/VO 分离 | 防止 API 契约变更时连累数据库实体 |
-| 前端 Feature-Sliced Design | 给专业前端明确的模块边界，架构师审核有据可依 |
+| 前端 App Router + 模块化 | Next.js 文件系统路由 + components/features/entities/shared 分层 |
 | 无认证/无 RBAC | 内网裸奔，聚焦日志能力 |
 | ENV 注入而非配置文件挂载 | 单机部署，环境变量最简单，减少文件管理复杂度 |

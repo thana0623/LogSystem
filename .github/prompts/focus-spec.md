@@ -127,7 +127,7 @@ assertDashboardExists("logsys-overview")  // 预置仪表盘存在
 | **logsys-api** | Spring Boot 3.x | REST API、查询路由、服务管理 | 8080 |
 | **logsys-analyzer** | Python 3.12 | 错误聚类、统计分析、定时任务 | — |
 | **grafana** | Grafana OSS | 预置仪表盘、即开即用 | 3000 |
-| **logsys-ui** | React 18 + TypeScript + Vite + TailwindCSS + shadcn/ui + Zustand + TanStack Query + Recharts (Phase2) | 企业级查询与分析界面，专业前端负责开发 | 5173 |
+| **logsys-ui** | Next.js 14 + TypeScript + TailwindCSS + shadcn/ui + Zustand + TanStack Query + Recharts (Phase2) | 企业级查询与分析界面，专业前端负责开发 | 3000 |
 
 ---
 
@@ -611,20 +611,26 @@ logsys/
 │
 ├── logsys-ui/                        # Phase 2 - 专业前端负责
 │   ├── package.json
-│   ├── vite.config.ts
+│   ├── next.config.js
 │   ├── tailwind.config.ts
 │   ├── tsconfig.json
-│   ├── index.html
 │   ├── public/
 │   ├── src/
-│   │   ├── app/                      # 应用入口、路由、全局 Provider
-│   │   ├── pages/                    # 页面组件：Dashboard / LogExplorer / Errors / Services
-│   │   ├── widgets/                  # 页面级组合块：LogTable / ErrorCard / StatsGrid
+│   │   ├── app/                      # Next.js App Router（文件系统路由）
+│   │   │   ├── layout.tsx            # 根布局
+│   │   │   ├── providers.tsx         # 全局 Provider（QueryClient + MSW）
+│   │   │   ├── dashboard/page.tsx    # Overview Dashboard
+│   │   │   ├── logs/page.tsx         # Log Explorer
+│   │   │   ├── errors/page.tsx       # Error Cluster
+│   │   │   └── services/[name]/      # Service Detail（动态路由）
+│   │   ├── components/               # UI 组件 + 布局组件
+│   │   │   ├── ui/                   # 自定义 shadcn 组件（按钮/输入框/表格/卡片…）
+│   │   │   └── layout/               # Sidebar / Navbar
 │   │   ├── features/                 # 业务功能：log-search / error-cluster / service-health
 │   │   ├── entities/                 # 领域模型：Log / Error / Service / Stats
-│   │   ├── shared/                   # 通用 UI 组件 + 工具函数
-│   │   │   ├── ui/                   # 自定义 shadcn 组件（按钮/输入框/表格/卡片…）
+│   │   ├── shared/                   # 通用工具
 │   │   │   ├── lib/                  # API client / formatters / constants
+│   │   │   └── styles/               # 全局样式 + CSS 变量
 │   │   │   └── styles/               # 全局样式 + CSS 变量 + Tailwind 扩展
 │   │   └── styles/
 │   └── Dockerfile
@@ -650,9 +656,8 @@ logsys/
 
 | 类别 | 选型 | 说明 |
 |------|------|------|
-| 框架 | React 18 | 专业前端团队主流选择 |
+| 框架 | Next.js 14 | React 全栈框架，App Router 文件系统路由 |
 | 语言 | TypeScript | 强类型，接口契约清晰 |
-| 构建 | Vite 5 | 极速 HMR |
 | 样式 | TailwindCSS 3 | 原子化，与 UI 规范天然对应 |
 | 组件基座 | shadcn/ui | 仅用结构，不做默认外观 |
 | 状态管理 | Zustand | 轻量，无 boilerplate |
