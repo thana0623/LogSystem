@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.logsys.dao.clickhouse.ErrorClusterMapper">
+
+    <!-- Top errors query: reads from error_clusters table (Phase 2) or falls back to logs table (Phase 1) -->
+    <select id="queryTopErrors" resultType="com.logsys.model.vo.ErrorClusterVO">
+        SELECT
+            exception_type AS exceptionType,
+            exception_message AS normalizedMsg,
+            exception_message AS sampleMessage,
+            serviceName,
+            count() AS totalCount,
+            min(timestamp) AS firstSeen,
+            max(timestamp) AS lastSeen
+        FROM logs
+        WHERE level = 'ERROR'
+          AND exception_type != ''
+          AND timestamp &gt;= toDateTime64(#{params.startTime}, 3)
+          AND timestamp &lt;= toDateTime64(#{params.endTime}, 3)
+          <if test="params.serviceName != null and params.serviceName != ''">
+              AND service_name = #{params.serviceName}
+          </if>
+        GROUP BY service_name, exception_type, exception_message
+        ORDER BY totalCount DESC
+        LIMIT #{params.limit}
+    </select>
+
+    <!-- Cluster summary: aggregate stats from logs table (Phase 1 fallback) -->
+    <select id="queryClusterSummary" resultType="map">
+        SELECT
+            uniqExact(concat(exception_type, '\0', exception_message)) AS total_clusters,
+            count() AS total_errors,
+            uniqExactIf(concat(exception_type, '\0', exception_message), timestamp &gt;= now() - INTERVAL 24 HOUR) AS new_clusters_24h
+        FROM logs
+        WHERE level = 'ERROR'
+          AND exception_type != ''
+          AND timestamp &gt;= toDateTime64(#{params.startTime}, 3)
+          AND timestamp &lt;= toDateTime64(#{params.endTime}, 3)
+          <if test="params.serviceName != null and params.serviceName != ''">
+              AND service_name = #{params.serviceName}
+          </if>
+    </select>
+
+    <!-- Top clusters for cluster analysis page -->
+    <select id="queryClusters" resultType="map">
+        SELECT
+            exception_type AS exceptionType,
+            exception_message AS normalizedMsg,
+            count() AS totalCount,
+            uniqExact(toDate(timestamp)) AS occurrenceDays,
+            count() / uniqExact(toDate(timestamp)) AS avgPerDay,
+            min(timestamp) AS firstSeen,
+            max(timestamp) AS lastSeen
+        FROM logs
+        WHERE level = 'ERROR'
+          AND exception_type != ''
+          AND timestamp &gt;= toDateTime64(#{params.startTime}, 3)
+          AND timestamp &lt;= toDateTime64(#{params.endTime}, 3)
+          <if test="params.serviceName != null and params.serviceName != ''">
+              AND service_name = #{params.serviceName}
+          </if>
+        GROUP BY exception_type, exception_message
+        ORDER BY totalCount DESC
+        LIMIT 20
+    </select>
+
+</mapper>

@@ -24,3 +24,21 @@
 
 ### Carry Forward
 - (暂无)
+
+## W-0001
+
+- Window progress: 108/10
+
+
+### Carry Forward
+
+Carry-forward from W-0001:
+- Files modified: C:\admin\Code\Project\LogSystem\.github\prompts\focus-spec.md, C:\admin\Code\Project\LogSystem\logsys-api\pom.xml, C:\admin\Code\Project\LogSystem\logsys-api\src\main\java\com\logsys\LogsysApplication.java, C:\admin\Code\Project\LogSystem\logsys-api\src\main\resources\application.yml, C:\admin\Code\Project\LogSystem\logsys-api\src\main\resources\application-dev.yml, C:\admin\Code\Project\LogSystem\logsys-api\src\main\java\com\logsys\model\dto\LogQueryRequest.java, C:\admin\Code\Project\LogSystem\logsys-api\src\main\java\com\logsys\model\dto\ServiceCreateRequest.java, C:\admin\Code\Project\LogSystem\logsys-api\src\main\java\com\logsys\model\vo\LogEntryVO.java, C:\admin\Code\Project\LogSystem\logsys-api\src\main\java\com\logsys\model\vo\ErrorClusterVO.java, C:\admin\Code\Project\LogSystem\logsys-api\src\main\java\com\logsys\model\vo\PageResult.java
+- Commands: npx pmcp start; git status -s; git log --oneline -5; ls -la; find . -type f -not -path './.git/*' | head -30
+- Total events in window: 108
+
+---
+
+## W-0002
+
+- Window progress: 0/10

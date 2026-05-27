@@ -1,0 +1,22 @@
+{
+  "annotations": {
+    "list": []
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "links": [],
+  "panels": [],
+  "schemaVersion": 39,
+  "tags": ["logsys"],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-24h",
+    "to": "now"
+  },
+  "title": "LogSys Overview",
+  "uid": "logsys-overview",
+  "version": 1
+}
