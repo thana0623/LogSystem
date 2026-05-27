@@ -20,7 +20,6 @@ public class LogEntryVO {
     private String spanId;
     private String exceptionType;
     private String exceptionMessage;
-    private String exceptionStacktrace;
     private Map<String, String> tags;
     private Map<String, String> fields;
 }

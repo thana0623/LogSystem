@@ -21,6 +21,10 @@
         ORDER BY created_at DESC
     </select>
 
+    <select id="count" resultType="int">
+        SELECT COUNT(*) FROM services
+    </select>
+
     <select id="findByName" resultMap="serviceResultMap">
         SELECT id, name, display_name, description, language, repository_url, created_at, updated_at
         FROM services

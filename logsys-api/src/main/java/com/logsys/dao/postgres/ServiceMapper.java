@@ -11,6 +11,8 @@ public interface ServiceMapper {
 
     List<ServiceEntity> findAll();
 
+    int count();
+
     ServiceEntity findByName(@Param("name") String name);
 
     int insert(@Param("service") ServiceEntity service);

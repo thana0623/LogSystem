@@ -30,9 +30,9 @@
     <!-- Cluster summary: aggregate stats from logs table (Phase 1 fallback) -->
     <select id="queryClusterSummary" resultType="map">
         SELECT
-            uniqExact(exception_type, exception_message) AS total_clusters,
+            uniqExact(concat(exception_type, '\0', exception_message)) AS total_clusters,
             count() AS total_errors,
-            uniqExactIf(exception_type, exception_message, timestamp &gt;= now() - INTERVAL 24 HOUR) AS new_clusters_24h
+            uniqExactIf(concat(exception_type, '\0', exception_message), timestamp &gt;= now() - INTERVAL 24 HOUR) AS new_clusters_24h
         FROM logs
         WHERE level = 'ERROR'
           AND exception_type != ''

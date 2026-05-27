@@ -68,8 +68,8 @@ public class LogQueryServiceImpl implements LogQueryService {
         params.put("level", level != null ? level.toUpperCase() : null);
         params.put("keyword", keyword);
         params.put("traceId", request.getTraceId());
-        params.put("startTime", request.getStartTime());
-        params.put("endTime", request.getEndTime());
+        params.put("startTime", startTime.toString());
+        params.put("endTime", endTime.toString());
         params.put("sort", "asc".equalsIgnoreCase(request.getSort()) ? "ASC" : "DESC");
         params.put("offset", (long) (page - 1) * pageSize);
         params.put("limit", (long) pageSize);

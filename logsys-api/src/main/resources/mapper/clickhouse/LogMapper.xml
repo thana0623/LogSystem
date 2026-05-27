@@ -48,7 +48,11 @@
             <include refid="logColumns"/>
         FROM logs
         <include refid="logConditions"/>
-        ORDER BY timestamp ${params.sort}
+        ORDER BY timestamp
+        <choose>
+            <when test="params.sort == 'ASC'">ASC</when>
+            <otherwise>DESC</otherwise>
+        </choose>
         LIMIT #{params.limit} OFFSET #{params.offset}
     </select>
 

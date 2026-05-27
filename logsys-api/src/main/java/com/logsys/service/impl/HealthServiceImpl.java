@@ -1,7 +1,6 @@
 package com.logsys.service.impl;
 
 import com.logsys.service.HealthService;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -13,19 +12,23 @@ import java.util.Map;
 
 @Slf4j
 @Service
-@RequiredArgsConstructor
 public class HealthServiceImpl implements HealthService {
 
-    private final DataSource clickHouseDataSource;
-    private final DataSource postgresDataSource;
+    private final JdbcTemplate clickHouseJdbc;
+    private final JdbcTemplate postgresJdbc;
+
+    public HealthServiceImpl(DataSource clickHouseDataSource, DataSource postgresDataSource) {
+        this.clickHouseJdbc = new JdbcTemplate(clickHouseDataSource);
+        this.postgresJdbc = new JdbcTemplate(postgresDataSource);
+    }
 
     @Override
     public Map<String, String> check() {
         Map<String, String> result = new LinkedHashMap<>();
         result.put("timestamp", Instant.now().toString());
 
-        String chStatus = pingClickHouse();
-        String pgStatus = pingPostgres();
+        String chStatus = ping(clickHouseJdbc, "ClickHouse");
+        String pgStatus = ping(postgresJdbc, "PostgreSQL");
 
         result.put("clickhouse", chStatus);
         result.put("postgres", pgStatus);
@@ -34,24 +37,12 @@ public class HealthServiceImpl implements HealthService {
         return result;
     }
 
-    private String pingClickHouse() {
+    private String ping(JdbcTemplate jdbc, String name) {
         try {
-            JdbcTemplate jdbc = new JdbcTemplate(clickHouseDataSource);
             jdbc.queryForObject("SELECT 1", Integer.class);
             return "UP";
         } catch (Exception e) {
-            log.warn("ClickHouse health check failed: {}", e.getMessage());
-            return "DOWN";
-        }
-    }
-
-    private String pingPostgres() {
-        try {
-            JdbcTemplate jdbc = new JdbcTemplate(postgresDataSource);
-            jdbc.queryForObject("SELECT 1", Integer.class);
-            return "UP";
-        } catch (Exception e) {
-            log.warn("PostgreSQL health check failed: {}", e.getMessage());
+            log.warn("{} health check failed: {}", name, e.getMessage());
             return "DOWN";
         }
     }

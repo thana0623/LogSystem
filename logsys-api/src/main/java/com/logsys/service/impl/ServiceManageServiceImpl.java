@@ -42,7 +42,7 @@ public class ServiceManageServiceImpl implements ServiceManageService {
         entity.setLanguage(request.getLanguage() != null ? request.getLanguage() : "other");
 
         serviceMapper.insert(entity);
-        return serviceMapper.findByName(request.getName());
+        return entity;
     }
 
     @Override
