@@ -1,0 +1,107 @@
+import type { ServiceInfo, ServiceDetail } from "@/shared/lib/api-client";
+
+export const mockServices: ServiceInfo[] = [
+  {
+    name: "order-service",
+    description: "订单服务",
+    language: "java",
+    last_log_at: "2026-05-24T19:59:00.123Z",
+    log_rate_per_min: 120.5,
+    error_rate: 0.023,
+    status: "healthy",
+    first_seen: "2026-05-20T08:00:00.000Z",
+    instance_count: 1,
+  },
+  {
+    name: "gateway",
+    description: "API 网关",
+    language: "java",
+    last_log_at: "2026-05-24T19:58:30.456Z",
+    log_rate_per_min: 350.2,
+    error_rate: 0.008,
+    status: "healthy",
+    first_seen: "2026-05-18T10:00:00.000Z",
+    instance_count: 2,
+  },
+  {
+    name: "user-service",
+    description: "用户认证服务",
+    language: "python",
+    last_log_at: "2026-05-24T19:57:00.789Z",
+    log_rate_per_min: 45.3,
+    error_rate: 0.067,
+    status: "warning",
+    first_seen: "2026-05-19T14:00:00.000Z",
+    instance_count: 1,
+  },
+  {
+    name: "payment-service",
+    description: "支付服务",
+    language: "java",
+    last_log_at: "2026-05-24T19:55:00.012Z",
+    log_rate_per_min: 30.1,
+    error_rate: 0.21,
+    status: "critical",
+    first_seen: "2026-05-21T09:00:00.000Z",
+    instance_count: 1,
+  },
+  {
+    name: "notification-service",
+    description: "通知服务",
+    language: "nodejs",
+    last_log_at: "2026-05-24T18:00:00.000Z",
+    log_rate_per_min: 0,
+    error_rate: 0,
+    status: "silent",
+    first_seen: "2026-05-22T16:00:00.000Z",
+    instance_count: 0,
+  },
+];
+
+export const mockServiceDetail: ServiceDetail = {
+  name: "order-service",
+  description: "订单服务",
+  language: "java",
+  status: "healthy",
+  first_seen: "2026-05-20T08:00:00.000Z",
+  last_log_at: "2026-05-24T19:59:00.123Z",
+  metrics: {
+    total_logs: 500000,
+    total_errors: 11500,
+    error_rate: 0.023,
+    log_rate_per_min: 120.5,
+  },
+  log_volume_trend: Array.from({ length: 24 }, (_, i) => ({
+    timestamp: `2026-05-24T${String(i).padStart(2, "0")}:00:00Z`,
+    total: Math.floor(7000 + Math.random() * 1000),
+    errors: Math.floor(100 + Math.random() * 80),
+  })),
+  top_errors: [
+    {
+      signature: "a1b2c3d4e5f6789012345678abcdef01",
+      exception_type: "IllegalStateException",
+      normalized_msg: "insufficient stock for item <N>",
+      count: 567,
+    },
+    {
+      signature: "b2c3d4e5f6789012345678abcdef0123",
+      exception_type: "NullPointerException",
+      normalized_msg: "Cannot invoke method on null reference at <PATH>",
+      count: 234,
+    },
+  ],
+  recent_logs: [
+    {
+      timestamp: "2026-05-24T19:59:00.123Z",
+      level: "ERROR",
+      message: "Failed to create order: insufficient stock for item 42",
+      trace_id: "a1b2c3d4e5f67890",
+    },
+    {
+      timestamp: "2026-05-24T19:58:45.456Z",
+      level: "WARN",
+      message: "Slow query detected: SELECT * FROM orders took 2340ms",
+      trace_id: "f678901234567890",
+    },
+  ],
+};

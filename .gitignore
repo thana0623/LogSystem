@@ -1,9 +1,12 @@
 # 环境变量
 .env
+.env.local
 
 # Node
 node_modules/
 dist/
+.next/
+tsconfig.tsbuildinfo
 
 # Java
 target/

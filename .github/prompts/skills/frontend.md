@@ -40,7 +40,7 @@ updated: 2026-05-10
 
 > 如果 focus-spec.md 第 4 章为 `assertCompilePass()` → Fast-Track 模式，跳过此 Phase，直接进入 Phase 2。
 
-1. 创建测试文件空壳（Vitest / Jest / React Testing Library）
+1. 创建测试文件空壳（Jest / React Testing Library）
 2. 将 focus-spec.md 第 4 章「核心测试断言清单」中的断言**原封不动**写入测试
    - UI 断言侧重：组件渲染、用户交互、状态变化、可访问性
    - 如：`expect(screen.getByRole('button', { name: '提交' })).toBeInTheDocument()`
