@@ -56,6 +56,7 @@ docker compose up -d
   │ Grafana  │◀─────────────────│PostgreSQL│      └──────┬──────┘
   │ 可视化   │                  │  元数据   │             │
   └──────────┘                  └──────────┘      ┌──────┴──────┐
+  └──────────┘                  └──────────┘      ┌──────┴──────┘
                                                    │   Python    │
   ┌──────────┐                                    │  分析引擎   │
   │React 前端│  (Phase 2)                         │  错误聚类   │
@@ -129,6 +130,33 @@ curl http://localhost:8080/api/v1/services
 | **分析** | Python 3.12 | 错误聚类、统计聚合。Phase 2。 |
 | **前端** | React 18 + shadcn/ui + Tailwind | Phase 2。Linear / Datadog 级别的 UI 质感。 |
 | **部署** | Docker Compose | 一个文件、一条命令、一台机器。 |
+
+## 辅助工具
+
+### CLI 日志管理 (`tools/cli/logsystem.py`)
+
+一个本地命令行日志工具，用于个人笔记式日志管理（与平台的日志采集系统独立）。
+
+要求 Python 3.10+。
+
+```bash
+# 新增日志
+python tools/cli/logsystem.py add --title "今天总结" --content "完成了日志系统原型" --tags work,python
+
+# 查看所有日志
+python tools/cli/logsystem.py list
+
+# 按关键字过滤
+python tools/cli/logsystem.py list --keyword 原型
+
+# 按标签过滤
+python tools/cli/logsystem.py list --tag work
+
+# 删除日志
+python tools/cli/logsystem.py delete --log-id 1
+```
+
+默认数据文件：`logs.json`（位于当前目录，可通过 `--file` 指定其他路径）。
 
 ## 项目文档
 

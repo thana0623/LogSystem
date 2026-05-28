@@ -14,8 +14,11 @@ target/
 # Python
 __pycache__/
 *.pyc
+*.pyo
 .venv/
 venv/
+.coverage
+.pytest_cache/
 
 # IDE
 .idea/
@@ -34,6 +37,9 @@ Thumbs.db
 # Temp
 *.log
 *.tmp
+
+# Data files
+logs.json
 
 # Logs directory (runtime)
 logs/
