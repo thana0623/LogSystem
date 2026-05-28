@@ -283,7 +283,7 @@ chore/{描述}                ← 构建/CI/杂务
 | ClickHouse Native | **9000** | TCP | 原生协议（Python 驱动用） |
 | PostgreSQL | **5432** | TCP | — |
 | Grafana | **3000** | HTTP | 仪表盘 |
-| 前端 Dev Server | **3000** | HTTP | Next.js 默认 |
+| 前端 Dev Server | **3001** | HTTP | Next.js 默认 |
 | Vector | — | — | 不暴露端口，仅出站 |
 
 **规则**：

@@ -17,7 +17,13 @@ export function MSWProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   if (!ready && process.env.NEXT_PUBLIC_ENABLE_MOCK === "true") {
-    return null;
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <div className="text-muted-foreground animate-pulse text-sm">
+          Loading mock server…
+        </div>
+      </div>
+    );
   }
 
   return <>{children}</>;

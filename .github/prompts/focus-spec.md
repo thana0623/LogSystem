@@ -127,7 +127,7 @@ assertDashboardExists("logsys-overview")  // 预置仪表盘存在
 | **logsys-api** | Spring Boot 3.x | REST API、查询路由、服务管理 | 8080 |
 | **logsys-analyzer** | Python 3.12 | 错误聚类、统计分析、定时任务 | — |
 | **grafana** | Grafana OSS | 预置仪表盘、即开即用 | 3000 |
-| **logsys-ui** | Next.js 14 + TypeScript + TailwindCSS + shadcn/ui + Zustand + TanStack Query + Recharts (Phase2) | 企业级查询与分析界面，专业前端负责开发 | 3000 |
+| **logsys-ui** | Next.js 14 + TypeScript + TailwindCSS + shadcn/ui + Zustand + TanStack Query + Recharts (Phase2) | 企业级查询与分析界面，专业前端负责开发 | 3001 |
 
 ---
 

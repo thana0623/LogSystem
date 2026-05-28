@@ -172,6 +172,16 @@ export interface StatsOverview {
   }[];
 }
 
+// ── Helpers ──
+
+function buildQuery(params: Record<string, unknown>): string {
+  const entries = Object.entries(params).filter(
+    ([, v]) => v !== undefined && v !== null
+  );
+  if (entries.length === 0) return "";
+  return `?${new URLSearchParams(entries as [string, string][]).toString()}`;
+}
+
 // ── API methods ──
 
 export const api = {
@@ -197,19 +207,11 @@ export const api = {
   errors: {
     top: (params?: { range?: string; limit?: number; service_name?: string }) =>
       request<{ items: TopError[] }>(
-        `/api/v1/errors/top?${new URLSearchParams(
-          Object.entries(params ?? {}).filter(
-            ([, v]) => v !== undefined
-          ) as string[][]
-        ).toString()}`
+        `/api/v1/errors/top${buildQuery(params ?? {})}`
       ),
     clusters: (params?: { range?: string; service_name?: string }) =>
       request<ErrorClusterSummary>(
-        `/api/v1/errors/clusters?${new URLSearchParams(
-          Object.entries(params ?? {}).filter(
-            ([, v]) => v !== undefined
-          ) as string[][]
-        ).toString()}`
+        `/api/v1/errors/clusters${buildQuery(params ?? {})}`
       ),
   },
 
