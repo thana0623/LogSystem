@@ -1,3 +1,7 @@
 __pycache__/
 *.pyc
+*.pyo
 logs.json
+.coverage
+.pytest_cache/
+logs/
