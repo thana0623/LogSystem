@@ -1,30 +1,49 @@
 # 项目上下文总览（Context）
 
 > 用途：统一沉淀项目当前技术栈、历史决策、待办事项，以及每日记录索引。
-> 自动生成时间: 2026-05-24
+> 自动生成时间: 2026-06-28
 
 ## 1. 当前技术栈
 
 ### 检测到的语言
-- (未检测到)
+- Python
+- Java
+- TypeScript
+- JavaScript
+- TypeScript (React)
 
 ### 检测到的框架
-- (未检测到)
+- Spring Boot (Maven)
+- React
+- Next.js
 
 ### 构建工具
-- (未检测到)
+- Maven
+- npm/yarn/pnpm
+- Make
+- Docker
 
 ### 数据库/中间件
-- (未检测到)
+- PostgreSQL
+- H2
 
 ### 包管理器
-- Unknown
+- npm
 
 ### 项目结构
 ```
 LogSystem/
-
+├── deploy/
+├── docs/
+├── logs/
+├── logsys-analyzer/
+├── logsys-api/
+├── logsys-ui/
+├── test/
+├── tests/
+├── tools/
 ```
+
 
 ## 2. 开发规范
 
